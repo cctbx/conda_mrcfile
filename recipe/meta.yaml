@@ -1,0 +1,43 @@
+{% set version = "1.1.0" %}
+
+package:
+  name: mrcfile
+  version: {{ version }}
+
+source:
+  git_url: https://github.com/ccpem/mrcfile.git
+  git_tag: v{{ version }}
+
+build:
+  number: 0
+  script: python setup.py install
+
+requirements:
+  host:
+    - python {{ python }}
+    - setuptools
+    - numpy >=1.11.0
+  run:
+    - python
+    - numpy >=1.11.0
+
+test:
+  source_files:
+    - tests
+  imports:
+    - mrcfile
+  commands:
+    - python -m unittest tests
+    - conda inspect linkages -p $PREFIX mrcfile  # [not win]
+    - conda inspect objects -p $PREFIX mrcfile  # [osx]
+
+about:
+  home: https://github.com/ccpem/mrcfile
+  summary: A Python implementation of the MRC2014 file format
+  description: A Python implementation of the MRC2014 file format
+  dev_url: https://github.com/ccpem/mrcfile
+  doc_url: https://github.com/ccpem/mrcfile
+
+extra:
+  recipe-maintainers:
+    - bkpoon
