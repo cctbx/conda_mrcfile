@@ -1,42 +1,41 @@
+{% set name = "mrcfile" %}
 {% set version = "1.1.0" %}
 
 package:
-  name: mrcfile
-  version: {{ version }}
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
 
 source:
-  git_url: https://github.com/ccpem/mrcfile.git
-  git_tag: v{{ version }}
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 689bb3a094500d0025abb0bcb24b75558dde3f68fe659c8d610b15aa6180dbc9
 
 build:
+  noarch: python
   number: 0
-  script: python setup.py install [not win]
+  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vvv "
 
 requirements:
   host:
-    - python {{ python }}
-    - setuptools
     - numpy >=1.11.0
-  run:
+    - pip
     - python
+  run:
     - numpy >=1.11.0
+    - python
 
 test:
-  source_files:
-    - tests
   imports:
     - mrcfile
-  commands:
-    - python -m unittest tests
-    - conda inspect linkages -p $PREFIX mrcfile  # [not win]
-    - conda inspect objects -p $PREFIX mrcfile  # [osx]
 
 about:
   home: https://github.com/ccpem/mrcfile
-  summary: A Python implementation of the MRC2014 file format
+  license: BSD
+  license_family: BSD
+  license_file:
+  summary: MRC file I/O library
   description: A Python implementation of the MRC2014 file format
-  dev_url: https://github.com/ccpem/mrcfile
   doc_url: https://github.com/ccpem/mrcfile
+  dev_url: https://github.com/ccpem/mrcfile
 
 extra:
   recipe-maintainers:
